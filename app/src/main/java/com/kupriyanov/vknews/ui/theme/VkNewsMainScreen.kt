@@ -1,20 +1,24 @@
 package com.kupriyanov.vknews.ui.theme
 
 import androidx.compose.foundation.clickable
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
-import com.kupriyanov.vknews.MainViewModel
+import com.kupriyanov.vknews.domain.FeedPost
 import com.kupriyanov.vknews.navigation.AppNavGraph
-import com.kupriyanov.vknews.navigation.NavigationState
+import com.kupriyanov.vknews.navigation.Screen
 import com.kupriyanov.vknews.navigation.rememberNavigationState
 
 @Composable
-fun MainScreen(viewModel: MainViewModel) {
+fun MainScreen() {
 
     val navigationState = rememberNavigationState()
+    val commentsToPost: MutableState<FeedPost?> = remember() {
+        mutableStateOf(null)
+    }
 
     Scaffold(
         bottomBar = { BottomBar(navigationState = navigationState) }
@@ -22,10 +26,20 @@ fun MainScreen(viewModel: MainViewModel) {
 
         AppNavGraph(
             navHostController = navigationState.navHostController,
-            homeScreenContent = {
+            newsFeedScreenContent = {
                 HomeScreen(
-                    viewModel = viewModel,
-                    paddingValues = paddingValues
+                    paddingValues = paddingValues,
+                    onCommentClickListener = {
+                        commentsToPost.value = it
+                        navigationState.navigateTo(Screen.Comments.route)
+                    }
+                )
+            },
+            commentsScreenContent = {
+                CommentsScreen(
+                    onBackPressed = {
+                        commentsToPost.value = null
+                    }, feedPost = commentsToPost.value!!
                 )
             },
             favouriteScreenContent = { TextCounter(name = "Favourite") },
