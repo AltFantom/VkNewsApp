@@ -9,7 +9,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import com.kupriyanov.vknews.domain.FeedPost
 import com.kupriyanov.vknews.navigation.AppNavGraph
-import com.kupriyanov.vknews.navigation.Screen
 import com.kupriyanov.vknews.navigation.rememberNavigationState
 
 @Composable
@@ -31,15 +30,16 @@ fun MainScreen() {
                     paddingValues = paddingValues,
                     onCommentClickListener = {
                         commentsToPost.value = it
-                        navigationState.navigateTo(Screen.Comments.route)
+                        navigationState.navigateToComments()
                     }
                 )
             },
             commentsScreenContent = {
                 CommentsScreen(
                     onBackPressed = {
-                        commentsToPost.value = null
-                    }, feedPost = commentsToPost.value!!
+                        navigationState.navHostController.popBackStack()
+                    },
+                    feedPost = commentsToPost.value!!
                 )
             },
             favouriteScreenContent = { TextCounter(name = "Favourite") },
