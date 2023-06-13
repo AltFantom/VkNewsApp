@@ -17,6 +17,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             VkNewsClientTheme {
+
                 val mainViewModel: MainViewModel = viewModel()
                 val authState = mainViewModel.authState.observeAsState(AuthState.Initial)
                 val launcher = rememberLauncherForActivityResult(
