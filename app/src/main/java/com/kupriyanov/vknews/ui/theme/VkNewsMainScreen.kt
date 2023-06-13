@@ -4,20 +4,18 @@ import androidx.compose.foundation.clickable
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.kupriyanov.vknews.domain.FeedPost
 import com.kupriyanov.vknews.navigation.AppNavGraph
 import com.kupriyanov.vknews.navigation.rememberNavigationState
 
 @Composable
 fun MainScreen() {
-
     val navigationState = rememberNavigationState()
-    val commentsToPost: MutableState<FeedPost?> = remember() {
-        mutableStateOf(null)
-    }
 
     Scaffold(
         bottomBar = { BottomBar(navigationState = navigationState) }
@@ -29,17 +27,16 @@ fun MainScreen() {
                 HomeScreen(
                     paddingValues = paddingValues,
                     onCommentClickListener = {
-                        commentsToPost.value = it
-                        navigationState.navigateToComments()
+                        navigationState.navigateToComments(it)
                     }
                 )
             },
-            commentsScreenContent = {
+            commentsScreenContent = { feedPost ->
                 CommentsScreen(
                     onBackPressed = {
                         navigationState.navHostController.popBackStack()
                     },
-                    feedPost = commentsToPost.value!!
+                    feedPost = feedPost
                 )
             },
             favouriteScreenContent = { TextCounter(name = "Favourite") },
