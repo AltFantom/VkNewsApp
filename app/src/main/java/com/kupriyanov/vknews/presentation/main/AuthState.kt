@@ -1,4 +1,4 @@
-package com.kupriyanov.vknews
+package com.kupriyanov.vknews.presentation.main
 
 sealed class AuthState {
 

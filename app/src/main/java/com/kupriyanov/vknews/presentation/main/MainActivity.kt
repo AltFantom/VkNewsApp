@@ -1,4 +1,4 @@
-package com.kupriyanov.vknews
+package com.kupriyanov.vknews.presentation.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,7 +6,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.kupriyanov.vknews.ui.theme.MainScreen
 import com.kupriyanov.vknews.ui.theme.VkNewsClientTheme
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKScope
@@ -17,7 +16,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             VkNewsClientTheme {
-
                 val mainViewModel: MainViewModel = viewModel()
                 val authState = mainViewModel.authState.observeAsState(AuthState.Initial)
                 val launcher = rememberLauncherForActivityResult(

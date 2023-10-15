@@ -1,4 +1,4 @@
-package com.kupriyanov.vknews
+package com.kupriyanov.vknews.presentation.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

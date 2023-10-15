@@ -1,4 +1,4 @@
-package com.kupriyanov.vknews.ui.theme
+package com.kupriyanov.vknews.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

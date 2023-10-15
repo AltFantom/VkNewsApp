@@ -1,4 +1,4 @@
-package com.kupriyanov.vknews
+package com.kupriyanov.vknews.presentation.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.kupriyanov.vknews.R
 import com.kupriyanov.vknews.ui.theme.DarkBlue
 
 @Composable

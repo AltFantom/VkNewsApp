@@ -1,4 +1,4 @@
-package com.kupriyanov.vknews.ui.theme
+package com.kupriyanov.vknews.presentation.main
 
 import androidx.compose.foundation.clickable
 import androidx.compose.material.MaterialTheme
@@ -12,6 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.kupriyanov.vknews.navigation.AppNavGraph
 import com.kupriyanov.vknews.navigation.rememberNavigationState
+import com.kupriyanov.vknews.presentation.comments.CommentsScreen
 
 @Composable
 fun MainScreen() {
@@ -24,7 +25,7 @@ fun MainScreen() {
         AppNavGraph(
             navHostController = navigationState.navHostController,
             newsFeedScreenContent = {
-                HomeScreen(
+                NewsFeedScreen(
                     paddingValues = paddingValues,
                     onCommentClickListener = {
                         navigationState.navigateToComments(it)

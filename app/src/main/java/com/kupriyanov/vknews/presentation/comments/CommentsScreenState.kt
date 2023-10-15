@@ -1,4 +1,4 @@
-package com.kupriyanov.vknews.ui.theme
+package com.kupriyanov.vknews.presentation.comments
 
 import com.kupriyanov.vknews.domain.FeedPost
 import com.kupriyanov.vknews.domain.PostComment

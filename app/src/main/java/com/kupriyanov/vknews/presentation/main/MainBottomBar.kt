@@ -1,4 +1,4 @@
-package com.kupriyanov.vknews.ui.theme
+package com.kupriyanov.vknews.presentation.main
 
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
