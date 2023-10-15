@@ -1,0 +1,17 @@
+package com.kupriyanov.vknews.data.model
+
+import com.google.gson.annotations.SerializedName
+
+
+data class PostDto(
+    @SerializedName("id") val id: String,
+    @SerializedName("source_id") val communityId: Long,
+    @SerializedName("is_favorite") val isFavourite: Boolean,
+    @SerializedName("text") val text: String,
+    @SerializedName("date") val date: Long,
+    @SerializedName("comments") val comments: CommentsDto,
+    @SerializedName("likes") val likes: LikesDto,
+    @SerializedName("views") val views: ViewsDto,
+    @SerializedName("reposts") val reposts: RepostsDto,
+    @SerializedName("attachments") val attachments: List<AttachmentDto>?
+)

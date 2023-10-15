@@ -1,31 +1,43 @@
 package com.kupriyanov.vknews.presentation.news
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.kupriyanov.vknews.data.mapper.NewsFeedMapper
+import com.kupriyanov.vknews.data.network.ApiFactory
 import com.kupriyanov.vknews.domain.FeedPost
 import com.kupriyanov.vknews.domain.StatisticItem
+import com.vk.api.sdk.VKPreferencesKeyValueStorage
+import com.vk.api.sdk.auth.VKAccessToken
+import kotlinx.coroutines.launch
 
-class NewsFeedViewModel : ViewModel() {
+class NewsFeedViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val postsList = mutableListOf<FeedPost>().apply {
-        repeat(10) {
-            add(
-                FeedPost(
-                    id = it,
-                    communityName = "/dev/null $it"
-                )
-            )
+    private val initialState = NewsFeedScreenState.Initial
+
+    private val _screenState = MutableLiveData<NewsFeedScreenState>(initialState)
+    val screenState: LiveData<NewsFeedScreenState> = _screenState
+
+    private val mapper = NewsFeedMapper()
+
+    init {
+        loadRecommendations()
+    }
+
+    private fun loadRecommendations() {
+        viewModelScope.launch {
+            val storage = VKPreferencesKeyValueStorage(getApplication())
+            val token = VKAccessToken.restore(storage) ?: return@launch
+            val response = ApiFactory.apiService.loadRecommendations(token.accessToken)
+            val feedPosts = mapper.mapResponseToPosts(response)
+            _screenState.value = NewsFeedScreenState.Posts(feedPosts)
         }
     }
 
-    private val initialState = NewsFeedScreenState.Posts(postsList)
-
-    private val _newsFeedScreenState = MutableLiveData<NewsFeedScreenState>(initialState)
-    val newsFeedScreenState: LiveData<NewsFeedScreenState> = _newsFeedScreenState
-
     fun updatePosts(feedPost: FeedPost, item: StatisticItem) {
-        val currentState = newsFeedScreenState.value
+        val currentState = screenState.value
         if (currentState !is NewsFeedScreenState.Posts) return
 
         val oldPosts = currentState.posts.toMutableList()
@@ -36,7 +48,7 @@ class NewsFeedViewModel : ViewModel() {
                 post
             }
         }
-        _newsFeedScreenState.value = NewsFeedScreenState.Posts(oldPosts)
+        _screenState.value = NewsFeedScreenState.Posts(oldPosts)
     }
 
     private fun updateStatistics(feedPost: FeedPost, item: StatisticItem): FeedPost {
@@ -53,11 +65,11 @@ class NewsFeedViewModel : ViewModel() {
 
 
     fun deletePost(feedPost: FeedPost) {
-        val currentState = newsFeedScreenState.value
+        val currentState = screenState.value
         if (currentState !is NewsFeedScreenState.Posts) return
 
         val modifiedList = currentState.posts.toMutableList()
         modifiedList.remove(feedPost)
-        _newsFeedScreenState.value = NewsFeedScreenState.Posts(modifiedList)
+        _screenState.value = NewsFeedScreenState.Posts(modifiedList)
     }
 }
